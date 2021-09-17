@@ -115,10 +115,8 @@ class UserController {
   async getUsers(req, res, next) {
     console.log('Tytb');
     try {
-      // const { page, count } = req.query;
-      const page = 1;
-      const count = 5;
-      const limit = count || 5;
+      const { page = 1, count = 5 } = req.query;
+      const limit = count;
       let offset = page * count - count;
 
       const users = await User.findAndCountAll({

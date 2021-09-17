@@ -1,0 +1,54 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+enum Gender {
+  none
+  male
+  female
+  other
+}
+
+type User {
+  id: ID!
+  username: String
+  age: Int
+  gender: Gender
+  unchanged_string: String
+  posts: [Post]
+}
+type Post {
+  id: ID
+  title: String
+  content: String
+}
+
+input UserInput {
+  username: String!
+  age: Int!
+  gender: String
+  unchanged_string: String
+  posts: [PostInput]
+}
+input UserChangeInput {
+  id: ID!
+  username: String!
+  age: Int!
+  gender: String
+  posts: [PostInput]
+}
+input PostInput {
+  id: ID
+  title: String!
+  content: String!
+}
+
+type Query {
+  getAllUsers: [User]
+  getUser(id: ID): User
+}
+type Mutation {
+  createUser(input: UserInput): User
+  changeUser(input: UserChangeInput): User
+}
