@@ -38,7 +38,7 @@ const Query = new GraphQLObjectType({
         type: new GraphQLList(User),
         args: {
           id: {
-            type: GraphQLInt
+            type: GraphQLInt || GraphQLString
           },
           firstName: {
             type: GraphQLString

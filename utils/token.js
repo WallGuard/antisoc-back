@@ -1,23 +1,19 @@
-const jwt = require('jsonwebtoken');
+import jwt from "jsonwebtoken";
 
 // const config = require('../config');
 
 const createAccessToken = (id) => {
   const payload = { id };
-  return jwt.sign(
-    payload,
-    process.env.SECRET_KEY,
-    { expiresIn: process.env.ACCESS_EXPIRES },
-  );
+  return jwt.sign(payload, process.env.SECRET_KEY, {
+    expiresIn: process.env.ACCESS_EXPIRES,
+  });
 };
 
 const createRefreshToken = (id) => {
   const payload = { id };
-  return jwt.sign(
-    payload,
-    process.env.SECRET_KEY,
-    { expiresIn: process.env.REFRESH_EXPIRES },
-  );
+  return jwt.sign(payload, process.env.SECRET_KEY, {
+    expiresIn: process.env.REFRESH_EXPIRES,
+  });
 };
 
 const createTokensPair = (id) => {
@@ -33,7 +29,7 @@ const verifyToken = (token) => {
   return payload;
 };
 
-module.exports = {
+export default {
   createAccessToken,
   createRefreshToken,
   createTokensPair,

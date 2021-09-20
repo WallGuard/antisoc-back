@@ -12,11 +12,12 @@ enum Gender {
 
 type User {
   id: ID!
-  username: String
-  age: Int
+  email: String!
+  firstName: String
+  lastName: String
   gender: Gender
-  unchanged_string: String
-  posts: [Post]
+  status: String
+  img: String
 }
 type Post {
   id: ID
@@ -25,18 +26,21 @@ type Post {
 }
 
 input UserInput {
-  username: String!
-  age: Int!
+  email: String!
+  password: String!
+  firstName: String
   gender: String
-  unchanged_string: String
-  posts: [PostInput]
+  status: String
+  img: String
 }
 input UserChangeInput {
   id: ID!
-  username: String!
-  age: Int!
+  email: String
+  password: String
+  firstName: String
   gender: String
-  posts: [PostInput]
+  status: String
+  img: String
 }
 input PostInput {
   id: ID
@@ -45,7 +49,7 @@ input PostInput {
 }
 
 type Query {
-  getAllUsers: [User]
+  getAllUsers(page: Int count: Int): [User]
   getUser(id: ID): User
 }
 type Mutation {

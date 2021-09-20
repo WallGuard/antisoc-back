@@ -1,4 +1,4 @@
-const userController = require("../controllers/users");
+const userController = require("../controllers/users/users");
 
 module.exports = (router) => {
   router.post("/edit", userController.editUser);
