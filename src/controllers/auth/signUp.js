@@ -4,12 +4,14 @@ const { StatusCodes } = require("http-status-codes");
 // const uuid = require("uuid");
 // const path = require("path");
 const { User } = require("../../db/models/models");
+const userService = require('../../db/services/user')
 
 const { createTokensPair } = require('../../utils/token');
 
 class authController {
   async signUp(req, res, next) {
     try {
+      console.log('TYTb');
       const { email, password } = req.body;
       if (!email || !password) {
         return next(ApiError.badRequest("Некорректный email или password"));
@@ -27,6 +29,8 @@ class authController {
         email,
         password: hashPassword,
       });
+      console.log('TYTb 2');
+      console.log(createTokensPair(user.id));
       return res.status(StatusCodes.CREATED).json({
         ...createTokensPair(user.id),
         user: {
@@ -47,6 +51,7 @@ class authController {
   };
 
   async login(req, res, next) {
+    console.log('TYTb');
     try {
       const {
         username,

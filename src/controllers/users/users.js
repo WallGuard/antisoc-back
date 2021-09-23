@@ -33,6 +33,7 @@ class UserController {
     if (candidate) {
       return next(ApiError.badRequest("This email is already in use!"));
     }
+    console.log('tyyyytb');
     const hashPassword = await bcrypt.hash(password, 5);
     const user = await User.create({
       email,

@@ -2,7 +2,7 @@ const { Op } = require('sequelize');
 const { StatusCodes } = require('http-status-codes');
 
 const db = require('../models');
-const SearchBuilder = require('../../utils/SearchBuilder');
+// const SearchBuilder = require('../../utils/SearchBuilder');
 const hash = require('../../utils/hash');
 const {
   createError,

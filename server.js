@@ -2,14 +2,14 @@ require("dotenv").config();
 
 import { serverStartLogo } from "./server_logo";
 // const socket = require("socket.io");
-const sequelize = require("./db/db");
+const sequelize = require("./src/db/db");
 
 import { ApolloServer } from "apollo-server-express";
 import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
 import http from "http";
-import typeDefs from "./db/schema";
-import { resolvers } from './resolvers/users'
-import app from './app';
+import typeDefs from "./src/db/schema";
+import { resolvers } from './src/resolvers/users'
+import app from './src/app';
 
 
 const PORT = process.env.PORT || 3002;
@@ -24,7 +24,6 @@ const startApolloServer = async (typeDefs, resolvers) => {
       formatError: (err) => {
         console.error(err);
         return { message: err.message };
-        // return err;
       },
       plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
     });

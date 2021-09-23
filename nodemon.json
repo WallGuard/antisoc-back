@@ -1,4 +1,4 @@
 {
-  "watch": ["server.js", "./db/schema"],
+  "watch": ["server.js", "./src", "./db/schema"],
   "ext": "js, gql"
 }
