@@ -29,14 +29,15 @@ const startApolloServer = async (typeDefs, resolvers) => {
     });
     await server.start();
     server.applyMiddleware({ app });
-    await sequelize.authenticate();
+    // await sequelize.authenticate();
     // await sequelize.drop();
-    await sequelize.sync();
+    // await sequelize.sync();
     await new Promise((resolve) => httpServer.listen({ port: PORT }, resolve));
 
     console.log("\x1b[36m%s\x1b[0m", serverStartLogo(PORT, server.graphqlPath));
   } catch (err) {
     console.log(err);
+    return logger.error('Error starting the server: ', err);
   }
 };
 

@@ -1,7 +1,9 @@
-const userController = require("../controllers/auth/signUp");
+const userController = require("../controllers/auth/index");
+const authControl = require("../controllers/auth");
 
-module.exports = (router) => {
+export default function(router) {
   router.post("/sign-up", userController.signUp);
+  router.post("/signup", authControl.signUp);
   // router.post('/login', userController.login);
 //   router.get('/auth', authMiddleware, userController.check)
 };

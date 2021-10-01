@@ -1,13 +1,14 @@
-const { Op } = require('sequelize');
-const { StatusCodes } = require('http-status-codes');
+import { Op } from 'sequelize';
+import { StatusCodes } from 'http-status-codes';
 
-const db = require('../models');
+// const db = require('../models');
+import db from '../db.js';
 // const SearchBuilder = require('../../utils/SearchBuilder');
-const hash = require('../../utils/hash');
-const {
+import hash from'../../utils/hash';
+import {
   createError,
   createValidationErrorBody,
-} = require('../../utils/createError');
+} from'../../utils/createError';
 
 const fieldsForExclude = [
   'password',
@@ -24,28 +25,20 @@ const excludeFields = (user) => {
   return filtered;
 };
 
-/**
- * @param {{
-    email: string;
-    login: string;
-    phone: string;
-    password: string;
- * }} data
- */
 const signUp = async ({ email, login, phone, password }) => {
   const userWithSameEmail = await db.user.findOne({ where: { email } });
   if (userWithSameEmail) {
     throw createError(
       createValidationErrorBody([{ path: 'email', message: 'Email занят' }]),
     );
-  }
+  };
 
   const userWithSameLogin = await db.user.findOne({ where: { login } });
   if (userWithSameLogin) {
     throw createError(
       createValidationErrorBody([{ path: 'login', message: 'Логин занят' }]),
     );
-  }
+  };
 
   const newUser = await db.user.create({
     email,
@@ -57,12 +50,6 @@ const signUp = async ({ email, login, phone, password }) => {
   return excludeFields(newUser);
 };
 
-/**
- * @param {{
-    username: string;
-    password: string;
- * }} data
- */
 const signIn = async ({ username = '', password = '' }) => {
   const user = await db.user.findOne({
     where: {
@@ -99,25 +86,6 @@ const getOne = async (id) => {
   return user;
 };
 
-/**
- * @param {{
-    pagination: {
-      perPage: string;
-      page: string;
-    };
-    sort: {
-      sortBy: string;
-      sortDirection: "straight" | "reverse";
-    };
-    filter: {
-      role: array;
-      tech_role: array;
-      status: array;
-      isDev: boolean;
-      search: string;
-    };
- * }} params
- */
 const getList = async (params) => {
   const formattedFilter = {};
 
@@ -176,24 +144,6 @@ const updateUserFromAdmin = async (id, data) => {
   return user;
 };
 
-/**
- * @param {number} id
- * @param {{
- * login: string;
- * phone: string;
- * email: string;
- * slack_name: string;
- * firstName: string;
- * firstName_ru: string;
- * lastName: string;
- * lastName_ru: string;
- * education: string;
- * education_ru: string;
- * info: string;
- * repo: array;
- * DoB: date;
- * }} data
- */
 const update = async (id, data) => {
   const [updatedItemsCount, [user]] = await db.user.update(data, {
     where: { id },
@@ -212,14 +162,6 @@ const update = async (id, data) => {
   return user;
 };
 
-/**
- *
- * @param {number} id
- * @param {{
- * oldPassword: string;
- * password: string;
- * }} data
- */
 const changePassword = async (id, data) => {
   const user = await db.user.findOne({
     where: { id },
@@ -237,7 +179,7 @@ const changePassword = async (id, data) => {
   await user.update({ password: data.password });
 };
 
-module.exports = {
+export default {
   excludeFields,
   signUp,
   signIn,

@@ -1,17 +1,15 @@
-/* eslint-disable import/no-dynamic-require */
-/* eslint-disable global-require */
-const changeCase = require("change-case");
-const express = require("express");
-const requireDirectory = require("require-directory");
+import { paramCase } from "param-case";
+import { Router } from "express";
+import requireDirectory from "require-directory";
 
 const routes = requireDirectory(module, "./");
 
-module.exports = (app) => {
+export default (app) => {
   Object.keys(routes).forEach((routeName) => {
-    const router = express.Router();
+    const router = Router();
 
-    require(`./${routeName}`)(router);
+    routes[routeName].default(router);
 
-    app.use(`/api/${changeCase.paramCase(routeName)}`, router);
+    app.use(`/api/${paramCase(routeName)}`, router);
   });
 };

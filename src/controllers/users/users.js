@@ -1,9 +1,9 @@
-const ApiError = require("../../error/ApiError");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const uuid = require("uuid");
-const path = require("path");
-const { User } = require("../../db/models/models");
+import ApiError from "../../error/ApiError";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import uuid from "uuid";
+import path from "path";
+import { User } from "../../db/models/models";
 
 const generateJwt = (id, email, role) => {
   return jwt.sign(
@@ -21,28 +21,40 @@ const generateJwt = (id, email, role) => {
 
 class UserController {
   async signUp(req, res, next) {
-    const { email, password } = req.body;
-    if (!email || !password) {
-      return next(ApiError.badRequest("Некорректный email или password"));
-    }
-    const candidate = await User.findOne({
-      where: {
+    try {
+      const { email, password } = req.body;
+      if (!email || !password) {
+        return next(ApiError.badRequest("Некорректный email или password"));
+      }
+      const candidate = await User.findOne({
+        where: {
+          email,
+        },
+      });
+      if (candidate) {
+        return res
+          .status(403)
+          .json({ error: [{ message: "This email is already in use!" }] });
+      }
+      const hashPassword = await bcrypt.hash(password, 5);
+      const user = await User.create({
         email,
-      },
-    });
-    if (candidate) {
-      return next(ApiError.badRequest("This email is already in use!"));
+        password: hashPassword,
+      });
+      const token = generateJwt(user.id, user.email);
+      return res.json({
+        token,
+      });
+    } catch (err) {
+      console.log(err);
+      if (err.type === "custom") {
+        console.log(res.status(err.code).json(err.message));
+        return res.status(err.code).json(err.message);
+      }
+      err.functionName = signUp.name;
+      err.fileName = __filename;
+      next(err);
     }
-    console.log('tyyyytb');
-    const hashPassword = await bcrypt.hash(password, 5);
-    const user = await User.create({
-      email,
-      password: hashPassword,
-    });
-    const token = generateJwt(user.id, user.email);
-    return res.json({
-      token,
-    });
   }
 
   async editUser(req, res, next) {
@@ -80,7 +92,7 @@ class UserController {
     return res.json({
       candidate,
     });
-  };
+  }
 
   // async login(req, res, next) {
   //   const {
@@ -97,7 +109,7 @@ class UserController {
   //   }
   //   let comparePassword = bcrypt.compareSync(password, user.password)
   //   if (!comparePassword) {
-    // +++
+  // +++
   //     return next(ApiError.internal('Указан неверный пароль'))
   //   }
   //   const token = generateJwt(user.id, user.email, user.role)
@@ -114,7 +126,6 @@ class UserController {
   // };
 
   async getUsers(req, res, next) {
-    console.log('Tytb');
     try {
       const { page = 1, count = 5 } = req.query;
       const limit = count;
@@ -131,7 +142,7 @@ class UserController {
     } catch (error) {
       console.log(error);
     }
-  };
+  }
 
   async getUser(req, res, next) {
     try {
@@ -148,14 +159,14 @@ class UserController {
         lastName: null,
         gender: "male",
         status: null,
-        img: "48c3b5b3-931f-4bd9-bd52-d99ce2c11ca0.jpg"
+        img: "48c3b5b3-931f-4bd9-bd52-d99ce2c11ca0.jpg",
       };
       console.log(user);
       return res.json(user);
     } catch (error) {
       console.log(error);
     }
-  };
+  }
 
   async setAvatar(req, res, next) {
     try {
@@ -180,6 +191,6 @@ class UserController {
       next(ApiError.badRequest(error.message));
     }
   }
-};
+}
 
-module.exports = new UserController();
+export default new UserController();

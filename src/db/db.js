@@ -1,14 +1,11 @@
-const {Sequelize} = require('sequelize');
+import Sequelize from 'sequelize';
+import configFile from '../config/config.json';
 
-require('dotenv').config();
+const env = process.env.NODE_ENV || 'development';
+const config = configFile[env]
 
-module.exports = new Sequelize(
-  process.env.DB_NAME,
-  process.env.DB_USER,
-  process.env.DB_PAS,
-  {
-    dialect: 'postgres',
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT
-  }
+// console.log(config);
+
+export const sequelize = new Sequelize(
+  config.database, config.username, config.password, config
 );

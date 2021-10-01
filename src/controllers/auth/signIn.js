@@ -3,7 +3,7 @@ const { StatusCodes } = require('http-status-codes');
 const userService = require('../../db/services/user');
 const { createTokensPair } = require('../../utils/token');
 
-// const { createError, createValidationErrorBody } = require('../../utils/createError');
+const { createError, createValidationErrorBody } = require('../../utils/createError');
 
 const signIn = async (req, res, next) => {
   try {
@@ -17,14 +17,14 @@ const signIn = async (req, res, next) => {
       password,
     });
 
-    // if (user.status === 'disabled') {
-    //   throw createError(
-    //     createValidationErrorBody([
-    //       { path: 'username', message: 'Пользователь отключён' },
-    //     ]),
-    //     { code: StatusCodes.FORBIDDEN },
-    //   );
-    // }
+    if (user.status === 'disabled') {
+      throw createError(
+        createValidationErrorBody([
+          { path: 'username', message: 'Пользователь отключён' },
+        ]),
+        { code: StatusCodes.FORBIDDEN },
+      );
+    }
 
     res.json({
       ...createTokensPair(user.id),
@@ -38,7 +38,7 @@ const signIn = async (req, res, next) => {
     err.functionName = signIn.name;
     err.fileName = __filename;
     next(err);
-  }
+  };
 };
 
 module.exports = signIn;

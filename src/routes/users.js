@@ -1,5 +1,5 @@
-const userController = require("../controllers/users/users");
+import userController from "../controllers/users/users";
 
-module.exports = (router) => {
+export default (router) => {
   router.get("/get-users", userController.getUsers);
 };
