@@ -2,7 +2,6 @@ require("dotenv").config();
 
 import { serverStartLogo } from "./server_logo";
 // const socket = require("socket.io");
-const sequelize = require("./src/db/db");
 
 import { ApolloServer } from "apollo-server-express";
 import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";

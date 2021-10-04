@@ -1,20 +1,86 @@
-const sequelize = require("../db");
-const { DataTypes } = require("sequelize");
+import { Model } from "sequelize";
 
-const UserSchema = sequelize.define("user", {
-  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  email: { type: DataTypes.STRING, unique: true },
-  password: { type: DataTypes.STRING, required: true },
-  role: { type: DataTypes.STRING, defaultValue: "USER" },
-  firstName: { type: DataTypes.STRING },
-  lastName: { type: DataTypes.STRING },
-  gender: { type: DataTypes.STRING, default: "none" },
-  status: { type: DataTypes.STRING },
-  img: { type: DataTypes.STRING },
-  isActivated: { type: DataTypes.BOOLEAN, default: false },
-  activationLink: { type: DataTypes.STRING },
-});
+export default (sequelize, Sequelize) => {
+  class user extends Model {
+    static associate(models) {
+      // models.user.belongsToMany(models.request, {
+      //   through: {
+      //     model: models.request_user,
+      //     unique: false,
+      //   },
+      //   foreignKey: 'user_id',
+      // });
+      // models.user.belongsToMany(models.candidate, {
+      //   through: models.user_subscriptions,
+      //   foreignKey: 'user_id',
+      //   as: 'subscriptions',
+      // });
+      // models.user.belongsToMany(models.project, {
+      //   through: models.user_project,
+      //   foreignKey: 'user_id',
+      //   as: 'project',
+      // });
+    }
+  }
 
-export default {
-  UserSchema,
+  user.init({
+    id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
+    firstName: {
+      type: Sequelize.STRING,
+      notEmpty: true,
+    },
+
+    email: {
+      type: Sequelize.STRING,
+      unique: true,
+      notEmpty: true,
+      allowNull: false,
+      validate: {
+        isEmail: true,
+      },
+    },
+
+    password: {
+      type: Sequelize.STRING,
+      allowNull: false,
+      // set(password) {
+      //   return this.setDataValue('password', hash(password));
+      // },
+    },
+
+    role: {
+      type: Sequelize.STRING,
+      defaultValue: "USER",
+    },
+
+    firstName: {
+      type: Sequelize.STRING,
+    },
+
+    lastName: {
+      type: Sequelize.STRING,
+    },
+
+    gender: {
+      type: Sequelize.STRING,
+      default: "none",
+    },
+    status: {
+      type: Sequelize.STRING,
+    },
+    img: { type: Sequelize.STRING },
+    // isActivated: { type: Sequelize.BOOLEAN, default: false },
+    // activationLink: { type: Sequelize.STRING },
+  },
+  {
+    sequelize,
+    modelName: 'user',
+    defaultScope: {
+      attributes: {
+        exclude: ['password'],
+      },
+    },
+    // freezeTableName: true,
+  },);
+  return user;
 };

@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-const createAccessToken = (id) => {
+export const createAccessToken = (id) => {
   try {
     const payload = { id };
     return jwt.sign(payload, process.env.SECRET_KEY, {
@@ -11,7 +11,7 @@ const createAccessToken = (id) => {
   }
 };
 
-const createRefreshToken = (id) => {
+export const createRefreshToken = (id) => {
   try {
     const payload = { id };
     return jwt.sign(payload, process.env.SECRET_KEY, {
@@ -22,8 +22,7 @@ const createRefreshToken = (id) => {
   }
 };
 
-const createTokensPair = (id) => {
-  console.log('TYTb for PAIR');
+export const createTokensPair = (id) => {
   try {
     return {
       access: createAccessToken(id),
@@ -34,7 +33,7 @@ const createTokensPair = (id) => {
   }
 };
 
-const verifyToken = (token) => {
+export const verifyToken = (token) => {
   try {
     const payload = jwt.verify(token, process.env.SECRET_KEY);
 
@@ -42,11 +41,4 @@ const verifyToken = (token) => {
   } catch (err) {
     console.log(err);
   }
-};
-
-export default {
-  createAccessToken,
-  createRefreshToken,
-  createTokensPair,
-  verifyToken,
 };

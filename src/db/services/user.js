@@ -2,7 +2,8 @@ import { Op } from 'sequelize';
 import { StatusCodes } from 'http-status-codes';
 
 // const db = require('../models');
-import db from '../db.js';
+import db from '../models/index';
+// console.log('DB', db);
 // const SearchBuilder = require('../../utils/SearchBuilder');
 import hash from'../../utils/hash';
 import {
@@ -25,7 +26,8 @@ const excludeFields = (user) => {
   return filtered;
 };
 
-const signUp = async ({ email, login, phone, password }) => {
+const signUp = async ({ email, phone, password }) => {
+  // console.log(db);
   const userWithSameEmail = await db.user.findOne({ where: { email } });
   if (userWithSameEmail) {
     throw createError(
@@ -33,16 +35,15 @@ const signUp = async ({ email, login, phone, password }) => {
     );
   };
 
-  const userWithSameLogin = await db.user.findOne({ where: { login } });
-  if (userWithSameLogin) {
-    throw createError(
-      createValidationErrorBody([{ path: 'login', message: 'Логин занят' }]),
-    );
-  };
+  // const userWithSameLogin = await db.user.findOne({ where: { login } });
+  // if (userWithSameLogin) {
+  //   throw createError(
+  //     createValidationErrorBody([{ path: 'login', message: 'Логин занят' }]),
+  //   );
+  // };
 
   const newUser = await db.user.create({
     email,
-    login,
     phone,
     password,
   });

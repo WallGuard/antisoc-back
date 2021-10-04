@@ -1,14 +1,11 @@
-import { StatusCodes } from'http-status-codes';
+import { StatusCodes } from "http-status-codes";
 
-import userServise from '../../db/services/user';
-import { createTokensPair } from '../../utils/token';
+import userServise from "../../db/services/user";
+import { createTokensPair } from "../../utils/token";
 
 const signUp = async (req, res, next) => {
   try {
-    const {
-      email,
-      password,
-    } = req.body;
+    const { email, password } = req.body;
 
     const newUser = await userServise.signUp({
       email,
@@ -20,7 +17,7 @@ const signUp = async (req, res, next) => {
       user: newUser,
     });
   } catch (err) {
-    if (err.type === 'custom') {
+    if (err.type === "custom") {
       return res.status(err.code).json(err.message);
     }
 

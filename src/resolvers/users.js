@@ -8,7 +8,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const uuid = require("uuid");
 const path = require("path");
-const { User } = require("../db/models/models");
+const { User } = require("../db/models/user");
 
 let users = [
   { id: 1, username: "Mikhail", age: 29 },

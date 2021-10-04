@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import uuid from "uuid";
 import path from "path";
-import { User } from "../../db/models/models";
+import { User } from "../../db/models";
 
 const generateJwt = (id, email, role) => {
   return jwt.sign(
