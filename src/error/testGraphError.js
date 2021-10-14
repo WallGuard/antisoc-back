@@ -5,7 +5,7 @@ export const ChangeUserError = createError('TEST ERROR', {
 });
 
 export const CreateUserError = createError('TEST ERROR', {
-  message: 'This ID aready exists BLYAT!!!'
+  message: 'This user aready exists BLYAT!!!'
 });
 
 export const InternalServerError = createError('TEST ERROR', {

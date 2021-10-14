@@ -34,11 +34,14 @@ export const createTokensPair = (id) => {
 };
 
 export const verifyToken = (token) => {
-  try {
+  // try {
     const payload = jwt.verify(token, process.env.SECRET_KEY);
 
     return payload;
-  } catch (err) {
-    console.log(err);
-  }
+  // } catch (err) {
+  //   // if (err.name === "JsonWebTokenError") {
+  //   //   return err.name;
+  //   // }
+  //   console.log(err);
+  // }
 };

@@ -1,11 +1,11 @@
 import signIn from './signIn';
 import signUp from './signUp';
-// const me = require('./me');
+import me from './me';
 // const refresh = require('./refresh');
 
-module.exports = {
+export default {
   signIn,
   signUp,
-  // me,
+  me,
   // refresh,
 };

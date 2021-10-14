@@ -1,6 +1,6 @@
 const _ = require('lodash');
 const { Op } = require('sequelize');
-const db = require('../db/models');
+const db = require('../db/db');
 
 const extendedSearchTypes = {
   in: Op.in,

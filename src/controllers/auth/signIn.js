@@ -1,9 +1,9 @@
-const { StatusCodes } = require('http-status-codes');
+import { StatusCodes } from 'http-status-codes';
 
-const userService = require('../../db/services/user');
-const { createTokensPair } = require('../../utils/token');
+import userService from '../../db/services/user';
+import { createTokensPair } from '../../utils/token';
 
-const { createError, createValidationErrorBody } = require('../../utils/createError');
+import { createError, createValidationErrorBody } from '../../utils/createError';
 
 const signIn = async (req, res, next) => {
   try {
@@ -41,4 +41,4 @@ const signIn = async (req, res, next) => {
   };
 };
 
-module.exports = signIn;
+export default signIn;

@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import uuid from "uuid";
 import path from "path";
-import { User } from "../../db/models";
+import db from "../../db/db";
 
 const generateJwt = (id, email, role) => {
   return jwt.sign(
@@ -26,7 +26,7 @@ class UserController {
       if (!email || !password) {
         return next(ApiError.badRequest("Некорректный email или password"));
       }
-      const candidate = await User.findOne({
+      const candidate = await db.user.findOne({
         where: {
           email,
         },
@@ -37,7 +37,7 @@ class UserController {
           .json({ error: [{ message: "This email is already in use!" }] });
       }
       const hashPassword = await bcrypt.hash(password, 5);
-      const user = await User.create({
+      const user = await db.user.create({
         email,
         password: hashPassword,
       });
@@ -58,7 +58,7 @@ class UserController {
   }
 
   async editUser(req, res, next) {
-    const candidate = await User.findOne({
+    const candidate = await db.user.findOne({
       where: {
         id: req.body.id,
       },
@@ -76,7 +76,7 @@ class UserController {
       candidate.status = req.body.status;
     }
 
-    await User.update(
+    await db.user.update(
       {
         firstName: candidate.firstName,
         lastName: candidate.lastName,
@@ -131,14 +131,15 @@ class UserController {
       const limit = count;
       let offset = page * count - count;
 
-      const users = await User.findAndCountAll({
+      const users = await db.user.findAndCountAll({
         limit,
         offset,
+        order: [['createdAt', 'DESC']]
         // where: {}, // conditions
       });
       // const users = await User.findAll()
       // console.log(users);
-      return res.json(users.rows);
+      return res.json(users);
     } catch (error) {
       console.log(error);
     }
@@ -148,19 +149,9 @@ class UserController {
     try {
       const { id } = req.params;
 
-      const user = await User.findOne({
+      const user = await db.user.findOne({
         where: { id: id },
       });
-      const userData = {
-        id: 2,
-        email: "wallguard313@gmail1.com",
-        role: "USER",
-        firstName: "Alik",
-        lastName: null,
-        gender: "male",
-        status: null,
-        img: "48c3b5b3-931f-4bd9-bd52-d99ce2c11ca0.jpg",
-      };
       console.log(user);
       return res.json(user);
     } catch (error) {
@@ -175,7 +166,7 @@ class UserController {
 
       let fileName = uuid.v4() + ".jpg";
       img.mv(path.resolve(__dirname, "..", "static", fileName));
-      const avatar = await User.update(
+      const avatar = await db.user.update(
         {
           img: fileName,
         },

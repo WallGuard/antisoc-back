@@ -1,7 +1,7 @@
 import { Model } from "sequelize";
 
 export default (sequelize, Sequelize) => {
-  class user extends Model {
+  class User extends Model {
     static associate(models) {
       // models.user.belongsToMany(models.request, {
       //   through: {
@@ -23,7 +23,7 @@ export default (sequelize, Sequelize) => {
     }
   }
 
-  user.init({
+  User.init({
     id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
     firstName: {
       type: Sequelize.STRING,
@@ -82,5 +82,5 @@ export default (sequelize, Sequelize) => {
     },
     // freezeTableName: true,
   },);
-  return user;
+  return User;
 };

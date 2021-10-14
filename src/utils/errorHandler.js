@@ -1,11 +1,11 @@
 /* eslint-disable no-console */
-const { formatToTimeZone } = require('date-fns-timezone');
-const { StatusCodes } = require('http-status-codes');
+import { formatToTimeZone } from 'date-fns-timezone';
+import { StatusCodes } from 'http-status-codes';
 
-const logger = require('./logger');
-const { getFileName } = require('./helpers');
+import logger from './logger';
+import { getFileName } from './helpers';
 
-module.exports = (err, req, res, next) => { // eslint-disable-line no-unused-vars
+export default (err, req, res, next) => { // eslint-disable-line no-unused-vars
   if (err.message === 'Validation error') {
     return res.status(400).json(err.errors[0].message);
   };

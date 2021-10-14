@@ -2,7 +2,7 @@ import { Op } from 'sequelize';
 import { StatusCodes } from 'http-status-codes';
 
 // const db = require('../models');
-import db from '../models/index';
+import db from '../db';
 // console.log('DB', db);
 // const SearchBuilder = require('../../utils/SearchBuilder');
 import hash from'../../utils/hash';
@@ -54,7 +54,7 @@ const signUp = async ({ email, phone, password }) => {
 const signIn = async ({ username = '', password = '' }) => {
   const user = await db.user.findOne({
     where: {
-      [Op.or]: [{ login: username }, { email: username }],
+      [Op.or]: [{ email: username }],
     },
     attributes: {
       include: ['password'],
@@ -104,7 +104,6 @@ const getList = async (params) => {
         value,
         fields: [
           'email',
-          'login',
           'firstName',
           'firstName_ru',
           'lastName',
@@ -117,11 +116,11 @@ const getList = async (params) => {
     }
   });
 
-  const query = new SearchBuilder({
-    pagination: params.pagination,
-    sort: params.sort,
-    filter: formattedFilter,
-  }).buildQuery();
+  // const query = new SearchBuilder({
+  //   pagination: params.pagination,
+  //   sort: params.sort,
+  //   filter: formattedFilter,
+  // }).buildQuery();
   const users = await db.user.findAll(query);
 
   return users;

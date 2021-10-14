@@ -21,13 +21,17 @@ if (config.use_env_variable) {
 };
 
 fs
-  .readdirSync(__dirname)
+  .readdirSync(`${__dirname}/models`)
   .filter((file) =>
     (file.indexOf('.') !== 0) &&
     (file !== basename) &&
     (file.slice(-3) === '.js'))
   .forEach((file) => {
     const fileName = file.slice(0, -3);
+    if (fileName === "index") {
+      return;
+    };
+
     const model = models[fileName].default(sequelize, Sequelize.DataTypes);
 
     db[model.name] = model;

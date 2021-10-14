@@ -1,9 +1,8 @@
-const userController = require("../controllers/auth/index");
-const authControl = require("../controllers/auth");
+import authControl from "../controllers/auth";
+import isAuth from '../middleware/isAuth';
 
 export default function(router) {
-  router.post("/sign-up", userController.signUp);
   router.post("/signup", authControl.signUp);
-  // router.post('/login', userController.login);
-//   router.get('/auth', authMiddleware, userController.check)
+  router.post('/login', authControl.signIn);
+  router.get('/me', isAuth, authControl.me);
 };
