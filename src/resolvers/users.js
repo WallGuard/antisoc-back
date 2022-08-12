@@ -35,8 +35,12 @@ export const resolvers = {
       }
     },
     getUser: (_, { id }) => {
-      console.log(id);
-      return users.find((user) => user.id == id);
+      console.log("USER_ID: ",id);
+      return user.findOne({
+        where: {
+          id: id,
+        }
+      });
     },
   },
   Mutation: {

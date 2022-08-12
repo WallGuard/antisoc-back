@@ -51,17 +51,18 @@ const signUp = async ({ email, phone, password }) => {
   return excludeFields(newUser);
 };
 
-const signIn = async ({ username = '', password = '' }) => {
+const signIn = async ({ email = '', password = '' }) => {
   const user = await db.user.findOne({
     where: {
-      [Op.or]: [{ email: username }],
+      [Op.or]: [{ email: email }],
     },
     attributes: {
       include: ['password'],
     },
   });
-
+console.log(user);
   if (!user) {
+    console.log("NET USERA");
     throw createError(
       createValidationErrorBody([
         { path: 'username', message: 'Пользователь не найден' },
@@ -77,7 +78,7 @@ const signIn = async ({ username = '', password = '' }) => {
       ]),
     );
   }
-
+console.log('SERVICE 2');
   return excludeFields(user);
 };
 

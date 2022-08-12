@@ -8,16 +8,17 @@ import { createError, createValidationErrorBody } from '../../utils/createError'
 const signIn = async (req, res, next) => {
   try {
     const {
-      username,
+      email,
       password,
     } = req.body;
 
     const user = await userService.signIn({
-      username,
+      email,
       password,
     });
 
     if (user.status === 'disabled') {
+      console.log('TYYYYYTb 1');
       throw createError(
         createValidationErrorBody([
           { path: 'username', message: 'Пользователь отключён' },
