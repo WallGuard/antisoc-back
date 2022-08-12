@@ -45,7 +45,7 @@ const signUp = async ({ email, phone, password }) => {
   const newUser = await db.user.create({
     email,
     phone,
-    password,
+    password: hash(password),
   });
 
   return excludeFields(newUser);

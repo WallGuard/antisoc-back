@@ -1,7 +1,7 @@
 import ApiError from "../../error/ApiError";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import uuid from "uuid";
+import * as uuid from "uuid";
 import path from "path";
 import db from "../../db/db";
 
@@ -165,7 +165,7 @@ class UserController {
       const { img } = req.files;
 
       let fileName = uuid.v4() + ".jpg";
-      img.mv(path.resolve(__dirname, "..", "static", fileName));
+      img.mv(path.resolve(__dirname, "../../", "static", fileName));
       const avatar = await db.user.update(
         {
           img: fileName,
