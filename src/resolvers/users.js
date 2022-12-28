@@ -66,20 +66,36 @@ export const resolvers = {
           });
         }
 
-        const hashPassword = await bcrypt.hash(input.password, 5);
+        // const hashPassword = await bcrypt.hash(input.password, 5);
         const newUser = await userServise.signUp({
           email,
-          password: hashPassword,
+          password: input.password,
         });
         // const newUser = await userServise.create({
         //   ...input,
         //   password: hashPassword,
         // });
-        console.log("AAAAAAAAAAAAAAAA",newUser.id);
-        return {...newUser, ...createTokensPair(newUser.id)};
+        console.log("AAAAAAAAAAAAAAAA", newUser.id);
+        return { ...newUser, ...createTokensPair(newUser.id) };
       } catch (err) {
         console.log({ ...err, errors: { message: "asdadadasdas" } });
         return err;
+      }
+    },
+    login: async (_, { input }) => {
+      try {
+        const { email, password } = input;
+
+        const user = await userServise.signIn({
+          email,
+          password,
+        });
+        console.log("DAAAAATA: ",user);
+
+        return { ...createTokensPair(user.id), ...user };
+      } catch (err) {
+        console.log({ ...err, errors: { message: "asdadadasdas" } });
+        return { err };
       }
     },
     changeUser: async (_, { input }) => {
