@@ -35,6 +35,12 @@ input UserInput {
   status: String
   img: String
 }
+
+input UserLoginInput {
+  email: String!
+  password: String!
+}
+
 input UserChangeInput {
   id: ID!
   email: String
@@ -57,5 +63,5 @@ type Query {
 type Mutation {
   createUser(input: UserInput): User
   changeUser(input: UserChangeInput): User
-  login(input: UserInput): User
+  login(input: UserLoginInput): User
 }

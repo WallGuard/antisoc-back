@@ -23,9 +23,9 @@ const isAuth = async (req, res, next) => {
         .status(StatusCodes.FORBIDDEN)
         .json('user have "disabled" status');
     }
-    if (req.originalUrl !== "/api/v2/auth/me" && user.status === "registered") {
-      return res.status(StatusCodes.FORBIDDEN);
-    }
+    // if (req.originalUrl !== "/api/v2/auth/me" && user.status === "registered") {
+    //   return res.status(StatusCodes.FORBIDDEN);
+    // }
 
     req.user = user;
 

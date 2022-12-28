@@ -134,7 +134,7 @@ class UserController {
       const users = await db.user.findAndCountAll({
         limit,
         offset,
-        order: [['createdAt', 'DESC']]
+        order: [["createdAt", "DESC"]],
         // where: {}, // conditions
       });
       // const users = await User.findAll()
