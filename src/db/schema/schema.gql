@@ -18,6 +18,8 @@ type User {
   gender: Gender
   status: String
   img: String
+  access: String
+  refresh: String
 }
 type Post {
   id: ID

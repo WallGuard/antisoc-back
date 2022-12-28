@@ -5,6 +5,8 @@ import {
 } from "../error/testGraphError";
 import db from "../db/db";
 import bcrypt from "bcrypt";
+import { createTokensPair } from "../utils/token";
+import userServise from "../db/services/user";
 
 const jwt = require("jsonwebtoken");
 const uuid = require("uuid");
@@ -35,11 +37,11 @@ export const resolvers = {
       }
     },
     getUser: (_, { id }) => {
-      console.log("USER_ID: ",id);
+      console.log("USER_ID: ", id);
       return user.findOne({
         where: {
           id: id,
-        }
+        },
       });
     },
   },
@@ -65,9 +67,16 @@ export const resolvers = {
         }
 
         const hashPassword = await bcrypt.hash(input.password, 5);
-        const newUser = await user.create({ ...input, password: hashPassword });
-
-        return newUser;
+        const newUser = await userServise.signUp({
+          email,
+          password: hashPassword,
+        });
+        // const newUser = await userServise.create({
+        //   ...input,
+        //   password: hashPassword,
+        // });
+        console.log("AAAAAAAAAAAAAAAA",newUser.id);
+        return {...newUser, ...createTokensPair(newUser.id)};
       } catch (err) {
         console.log({ ...err, errors: { message: "asdadadasdas" } });
         return err;
